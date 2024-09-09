@@ -1,0 +1,110 @@
+services:
+  tracker:
+    image: p2p
+    build: .
+    command: 'java -cp ./out/ Main'
+  node1:
+    image: p2p
+    environment:
+      DIRECTORY: d1
+      TRACKER: tracker
+    depends_on:
+      - tracker
+  node2:
+    image: p2p
+    environment:
+      DIRECTORY: d2
+      TRACKER: tracker
+    depends_on:
+      - tracker
+  node3:
+    image: p2p
+    environment:
+      DIRECTORY: d3
+      TRACKER: tracker
+    depends_on:
+      - tracker
+  node4:
+    image: p2p
+    environment:
+      DIRECTORY: d4
+      TRACKER: tracker
+    depends_on:
+      - tracker
+  node5:
+    image: p2p
+    environment:
+      DIRECTORY: d5
+      TRACKER: tracker
+    depends_on:
+      - tracker
+  node6:
+    image: p2p
+    environment:
+      DIRECTORY: d6
+      TRACKER: tracker
+    depends_on:
+      - tracker
+  node7:
+    image: p2p
+    environment:
+      DIRECTORY: d7
+      TRACKER: tracker
+    depends_on:
+      - tracker
+  node8:
+    image: p2p
+    environment:
+      DIRECTORY: d8
+      TRACKER: tracker
+    depends_on:
+      - tracker
+  node9:
+    image: p2p
+    environment:
+      DIRECTORY: d9
+      TRACKER: tracker
+    depends_on:
+      - tracker
+  node10:
+    image: p2p
+    environment:
+      DIRECTORY: d10
+      TRACKER: tracker
+    depends_on:
+      - tracker
+  node11:
+    image: p2p
+    environment:
+      DIRECTORY: d11
+      TRACKER: tracker
+    depends_on:
+      - tracker
+  node12:
+    image: p2p
+    environment:
+      DIRECTORY: d12
+      TRACKER: tracker
+    depends_on:
+      - tracker
+  node13:
+    image: p2p
+    environment:
+      DIRECTORY: d13
+      TRACKER: tracker
+    depends_on:
+      - tracker
+  node14:
+    image: p2p
+    environment:
+      DIRECTORY: d14
+      TRACKER: tracker
+    depends_on:
+      - tracker
+  node15:
+    image: p2p
+    environment:
+      DIRECTORY: d15
+      TRACKER: tracker
+    depends_on:
+      - tracker
