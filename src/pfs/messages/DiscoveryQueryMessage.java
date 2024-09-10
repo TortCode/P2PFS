@@ -1,4 +1,4 @@
-package messages;
+package pfs.messages;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

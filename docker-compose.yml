@@ -2,7 +2,7 @@ services:
   tracker:
     image: p2p
     build: .
-    command: 'java -cp ./out/ Main'
+    command: 'java -cp ./out/ pfs.Main'
   node1:
     image: p2p
     environment:

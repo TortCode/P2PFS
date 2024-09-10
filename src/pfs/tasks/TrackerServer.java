@@ -1,11 +1,13 @@
+package pfs.tasks;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import pfs.Constants;
 
 public class TrackerServer extends ListenerTask {
     private final List<InetAddress> peers;

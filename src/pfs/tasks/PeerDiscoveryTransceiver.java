@@ -1,6 +1,8 @@
-import messages.DiscoveryMessage;
-import messages.DiscoveryQueryMessage;
-import messages.DiscoveryReplyMessage;
+package pfs.tasks;
+
+import pfs.messages.DiscoveryMessage;
+import pfs.messages.DiscoveryQueryMessage;
+import pfs.messages.DiscoveryReplyMessage;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -10,29 +12,24 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
-public class PeerDiscoveryLink {
+public class PeerDiscoveryTransceiver {
     private final Socket socket;
     private final DataOutputStream outputStream;
     private final DataInputStream inputStream;
     private final BlockingQueue<DiscoveryMessage> senderQueue;
     private final BlockingQueue<DiscoveryMessage> receiverQueue;
-    private final BlockingQueue<DiscoveryQueryMessage> queryQueue;
-    private final BlockingQueue<DiscoveryReplyMessage> replyQueue;
 
-    public PeerDiscoveryLink(
+    public PeerDiscoveryTransceiver(
             Socket socket,
-            BlockingQueue<DiscoveryQueryMessage> queryQueue,
-            BlockingQueue<DiscoveryReplyMessage> replyQueue
+            BlockingQueue<DiscoveryMessage> senderQueue,
+            BlockingQueue<DiscoveryMessage> receiverQueue
     ) throws IOException {
         this.socket = socket;
         this.outputStream = new DataOutputStream(socket.getOutputStream());
         this.inputStream = new DataInputStream(socket.getInputStream());
-        this.senderQueue = new LinkedBlockingQueue<>();
-        this.receiverQueue = new LinkedBlockingQueue<>();
-        this.queryQueue = queryQueue;
-        this.replyQueue = replyQueue;
+        this.senderQueue = senderQueue;
+        this.receiverQueue = receiverQueue;
     }
 
     private static void logMessage(DiscoveryMessage message, String eventType) {
@@ -55,11 +52,11 @@ public class PeerDiscoveryLink {
     private void runSender() {
         while (!Thread.interrupted()) {
             try {
-                DiscoveryMessage message = PeerDiscoveryLink.this.senderQueue.take();
+                DiscoveryMessage message = PeerDiscoveryTransceiver.this.senderQueue.take();
                 boolean isReply = (message instanceof DiscoveryReplyMessage);
-                PeerDiscoveryLink.this.outputStream.writeBoolean(isReply);
-                message.writeData(PeerDiscoveryLink.this.outputStream);
-                PeerDiscoveryLink.logMessage(message, "SEND");
+                PeerDiscoveryTransceiver.this.outputStream.writeBoolean(isReply);
+                message.writeData(PeerDiscoveryTransceiver.this.outputStream);
+                PeerDiscoveryTransceiver.logMessage(message, "SEND");
             } catch (InterruptedException ignore) {
                 return;
             } catch (IOException ignore) {
@@ -70,11 +67,11 @@ public class PeerDiscoveryLink {
     private void runReceiver() {
         while (!Thread.interrupted()) {
             try {
-                boolean isReply = PeerDiscoveryLink.this.inputStream.readBoolean();
+                boolean isReply = PeerDiscoveryTransceiver.this.inputStream.readBoolean();
                 DiscoveryMessage message = (isReply) ? new DiscoveryReplyMessage() : new DiscoveryQueryMessage();
-                message.readData(PeerDiscoveryLink.this.inputStream);
-                PeerDiscoveryLink.logMessage(message, "RECV");
-                PeerDiscoveryLink.this.receiverQueue.put(message);
+                message.readData(PeerDiscoveryTransceiver.this.inputStream);
+                PeerDiscoveryTransceiver.logMessage(message, "RECV");
+                PeerDiscoveryTransceiver.this.receiverQueue.put(message);
             } catch (InterruptedException ignore) {
                 return;
             } catch (IOException ignore) {

@@ -1,3 +1,5 @@
+package pfs;
+
 import java.io.*;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -53,12 +55,12 @@ public class FileDirectory {
         }
     }
 
-    public OutputStream writeFile(String fileName) throws IOException {
+    public OutputStream newFileOutput(String fileName) throws IOException {
         OutputStream out = new BufferedOutputStream(Files.newOutputStream(this.root.resolve(fileName), StandardOpenOption.APPEND));
         return out;
     }
 
-    public InputStream readFile(String fileName) throws IOException {
+    public InputStream newFileInput(String fileName) throws IOException {
         InputStream in = new BufferedInputStream(Files.newInputStream(this.root.resolve(fileName), StandardOpenOption.READ));
         while (in.read() != '\n') ;
         return in;

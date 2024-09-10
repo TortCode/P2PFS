@@ -1,27 +1,29 @@
-import messages.DiscoveryQueryMessage;
-import messages.DiscoveryReplyMessage;
+package pfs.tasks;
+
+import pfs.Constants;
+import pfs.FileDirectory;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
-public class Node {
+public class DiscoveryServer {
     private final FileDirectory directory;
     private final String trackerName;
-    private final HashMap<InetAddress, PeerDiscoveryLink> peerDiscoveryTable;
+    private final ConcurrentMap<InetAddress, PeerDiscoveryTransceiver> peerDiscoveryTable;
     private ListenerTask discoveryListenerTask;
 
-    public Node(String directory, String trackerName) {
+    public DiscoveryServer(String directory, String trackerName) {
         this.directory = new FileDirectory(directory);
         this.trackerName = trackerName;
-        this.peerDiscoveryTable = new HashMap<>();
+        this.peerDiscoveryTable = new ConcurrentHashMap<>();
     }
 
     public void start() {
@@ -37,7 +39,7 @@ public class Node {
     }
 
     private void addLink(Socket socket) throws IOException {
-        this.peerDiscoveryTable.put(socket.getInetAddress(), new PeerDiscoveryLink(socket, null, null));
+        this.peerDiscoveryTable.put(socket.getInetAddress(), new PeerDiscoveryTransceiver(socket, null, null));
         String s = "NEIGHBORS:\n";
         for (InetAddress peerAddress : this.peerDiscoveryTable.keySet()) {
             s += peerAddress.getCanonicalHostName() + '\n';
@@ -53,7 +55,7 @@ public class Node {
         @Override
         protected void handleConnection(Socket socket) throws IOException {
             System.out.println("CONNECT FROM: " + socket.getInetAddress().getCanonicalHostName());
-            Node.this.addLink(socket);
+            DiscoveryServer.this.addLink(socket);
         }
     }
 
