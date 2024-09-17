@@ -1,20 +1,24 @@
 # Peer2Peer-FileShare
 ## Contents
-- Main:
-Entrypoint to program
-- Constants:
-Contains port number configurations
-- FileDirectory:
-For future use 
-- tasks: Background tasks running on each node
-  - DiscoveryServer: Server for joining and accepting connections from resource discovery network
-  - PeerDiscoveryTransceiver: For future use
-  - TrackerServer: Server for tracking all nodes in network
-  - ListenerTask: Base class for servers
-- messages: Message formats
-  - DiscoveryMessage: Base class containing common data to all discovery messages
-  - DiscoveryQueryMessage: For future use
-  - DiscoveryReplyMessage: For future use
+- `data`
+  - `d{i}`: Data for peer `i`
+  - `populate.py`: Utility script to add a file and keyword to a directory
+- `src`
+  - `Main`:
+  Entrypoint to program
+  - `Constants`:
+  Contains port number configurations
+  - `FileDirectory`:
+  Processes contents of data directory to generate list of available files and keywords
+  - `tasks`: Background tasks running on each node
+    - `DiscoveryServer`: Server for joining and accepting connections from resource discovery network
+    - `PeerDiscoveryTransceiver`: For future use
+    - `TrackerServer`: Server for tracking all nodes in network
+    - `ListenerTask`: Base class for servers
+  - `messages`: Message formats
+    - `DiscoveryMessage`: Base class containing common data to all discovery messages
+    - `DiscoveryQueryMessage`: For future use
+    - `DiscoveryReplyMessage`: For future use
 ## Instructions
 ### Compilation
 Compile the Java source files into class files:
@@ -25,7 +29,7 @@ javac -d ./out/ @sources.txt
 
 ### Execution
 #### Tracker
-Start a tracker server on any host with:
+Start a tracker server on any host (note the hostname down) with:
 ```
 java -cp ./out/ pfs.Main
 ```

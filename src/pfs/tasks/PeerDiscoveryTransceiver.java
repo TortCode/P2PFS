@@ -18,23 +18,38 @@ public class PeerDiscoveryTransceiver {
     private final DataOutputStream outputStream;
     private final DataInputStream inputStream;
     private final BlockingQueue<DiscoveryMessage> senderQueue;
-    private final BlockingQueue<DiscoveryMessage> receiverQueue;
+    private final BlockingQueue<DiscoveryServer.ReceivedMessage> receiverQueue;
+    private final Thread senderThread;
+    private final Thread receiverThread;
 
     public PeerDiscoveryTransceiver(
             Socket socket,
             BlockingQueue<DiscoveryMessage> senderQueue,
-            BlockingQueue<DiscoveryMessage> receiverQueue
+            BlockingQueue<DiscoveryServer.ReceivedMessage> receiverQueue
     ) throws IOException {
         this.socket = socket;
         this.outputStream = new DataOutputStream(socket.getOutputStream());
         this.inputStream = new DataInputStream(socket.getInputStream());
         this.senderQueue = senderQueue;
         this.receiverQueue = receiverQueue;
+        this.senderThread = new Thread(this::runSender);
+        this.receiverThread = new Thread(this::runReceiver);
     }
 
-    private static void logMessage(DiscoveryMessage message, String eventType) {
+    public void start() {
+        this.senderThread.start();
+        this.receiverThread.start();
+    }
+
+    public void stop() throws IOException {
+        this.senderThread.interrupt();
+        this.receiverThread.interrupt();
+        this.socket.close();
+    }
+
+    private void logMessage(DiscoveryMessage message, String eventType) {
         LocalDateTime expirationTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(message.expiration), ZoneId.systemDefault());
-        System.out.format("[%s] %s | ", LocalDateTime.now(), eventType);
+        System.out.format("[%s] %s VIA %s | ", LocalDateTime.now(), eventType, this.socket.getInetAddress().getCanonicalHostName());
         System.out.format("%s (%d) EXPIRES %s | ", message.initiator.getCanonicalHostName(), message.sequenceId, expirationTime);
         if (message instanceof DiscoveryQueryMessage) {
             DiscoveryQueryMessage queryMessage = (DiscoveryQueryMessage) message;
@@ -56,7 +71,8 @@ public class PeerDiscoveryTransceiver {
                 boolean isReply = (message instanceof DiscoveryReplyMessage);
                 PeerDiscoveryTransceiver.this.outputStream.writeBoolean(isReply);
                 message.writeData(PeerDiscoveryTransceiver.this.outputStream);
-                PeerDiscoveryTransceiver.logMessage(message, "SEND");
+                PeerDiscoveryTransceiver.this.outputStream.flush();
+                PeerDiscoveryTransceiver.this.logMessage(message, "SEND");
             } catch (InterruptedException ignore) {
                 return;
             } catch (IOException ignore) {
@@ -70,8 +86,8 @@ public class PeerDiscoveryTransceiver {
                 boolean isReply = PeerDiscoveryTransceiver.this.inputStream.readBoolean();
                 DiscoveryMessage message = (isReply) ? new DiscoveryReplyMessage() : new DiscoveryQueryMessage();
                 message.readData(PeerDiscoveryTransceiver.this.inputStream);
-                PeerDiscoveryTransceiver.logMessage(message, "RECV");
-                PeerDiscoveryTransceiver.this.receiverQueue.put(message);
+                PeerDiscoveryTransceiver.this.logMessage(message, "RECV");
+                PeerDiscoveryTransceiver.this.receiverQueue.put(new DiscoveryServer.ReceivedMessage(message, this.socket.getInetAddress()));
             } catch (InterruptedException ignore) {
                 return;
             } catch (IOException ignore) {

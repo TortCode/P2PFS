@@ -1,6 +1,12 @@
 package pfs;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,6 +47,14 @@ public class FileDirectory {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public FileEntry searchByKeyword(String keyword) {
+        return keywordMap.get(keyword);
+    }
+
+    public FileEntry searchByFileName(String fileName) {
+        return fileNameMap.get(fileName);
     }
 
     public void createFile(String fileName, String keyword) throws IOException {

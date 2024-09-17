@@ -10,6 +10,7 @@ services:
       TRACKER: tracker
     depends_on:
       - tracker
+    stdin_open: true
   node2:
     image: p2p
     environment:
@@ -17,6 +18,7 @@ services:
       TRACKER: tracker
     depends_on:
       - tracker
+    stdin_open: true
   node3:
     image: p2p
     environment:
@@ -24,6 +26,7 @@ services:
       TRACKER: tracker
     depends_on:
       - tracker
+    stdin_open: true
   node4:
     image: p2p
     environment:
@@ -31,6 +34,7 @@ services:
       TRACKER: tracker
     depends_on:
       - tracker
+    stdin_open: true
   node5:
     image: p2p
     environment:
@@ -38,6 +42,7 @@ services:
       TRACKER: tracker
     depends_on:
       - tracker
+    stdin_open: true
   node6:
     image: p2p
     environment:
@@ -45,6 +50,7 @@ services:
       TRACKER: tracker
     depends_on:
       - tracker
+    stdin_open: true
   node7:
     image: p2p
     environment:
@@ -52,6 +58,7 @@ services:
       TRACKER: tracker
     depends_on:
       - tracker
+    stdin_open: true
   node8:
     image: p2p
     environment:
@@ -59,6 +66,7 @@ services:
       TRACKER: tracker
     depends_on:
       - tracker
+    stdin_open: true
   node9:
     image: p2p
     environment:
@@ -66,6 +74,7 @@ services:
       TRACKER: tracker
     depends_on:
       - tracker
+    stdin_open: true
   node10:
     image: p2p
     environment:
@@ -73,6 +82,7 @@ services:
       TRACKER: tracker
     depends_on:
       - tracker
+    stdin_open: true
   node11:
     image: p2p
     environment:
@@ -80,6 +90,7 @@ services:
       TRACKER: tracker
     depends_on:
       - tracker
+    stdin_open: true
   node12:
     image: p2p
     environment:
@@ -87,6 +98,7 @@ services:
       TRACKER: tracker
     depends_on:
       - tracker
+    stdin_open: true
   node13:
     image: p2p
     environment:
@@ -94,6 +106,7 @@ services:
       TRACKER: tracker
     depends_on:
       - tracker
+    stdin_open: true
   node14:
     image: p2p
     environment:
@@ -101,6 +114,7 @@ services:
       TRACKER: tracker
     depends_on:
       - tracker
+    stdin_open: true
   node15:
     image: p2p
     environment:
@@ -108,3 +122,4 @@ services:
       TRACKER: tracker
     depends_on:
       - tracker
+    stdin_open: true

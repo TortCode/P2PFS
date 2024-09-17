@@ -4,21 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bf11d1c8-ab05-4d7e-b2e8-fe5c26786334" name="Changes" comment="Network Creation">
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    <list default="true" id="bf11d1c8-ab05-4d7e-b2e8-fe5c26786334" name="Changes" comment="Add discovery queries">
+      <change afterPath="$PROJECT_DIR$/setupdata.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/createdirs.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/populate.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FileDirectory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/FileDirectory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ListenerTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/tasks/ListenerTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/tasks/DiscoveryServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PeerDiscoveryLink.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/tasks/PeerDiscoveryTransceiver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TrackerServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/tasks/TrackerServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/messages/DiscoveryMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/messages/DiscoveryMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/messages/DiscoveryQueryMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/messages/DiscoveryQueryMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/messages/DiscoveryReplyMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/messages/DiscoveryReplyMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pfs/FileDirectory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/FileDirectory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pfs/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pfs/messages/DiscoveryReplyMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/messages/DiscoveryReplyMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pfs/tasks/DiscoveryServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/tasks/DiscoveryServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pfs/tasks/PeerDiscoveryTransceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/tasks/PeerDiscoveryTransceiver.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,8 +29,8 @@
       <list>
         <option value="Record" />
         <option value="Enum" />
-        <option value="Class" />
         <option value="Dockerfile" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -55,7 +54,7 @@
   &quot;isMigrated&quot;: true
 }</component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
@@ -86,7 +85,7 @@
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.Java&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -160,7 +159,18 @@
       <workItem from="1725919256345" duration="2348000" />
       <workItem from="1725938451167" duration="1637000" />
       <workItem from="1725980268927" duration="153000" />
-      <workItem from="1726006783168" duration="1729000" />
+      <workItem from="1726006783168" duration="1760000" />
+      <workItem from="1726017230248" duration="1405000" />
+      <workItem from="1726066603076" duration="89000" />
+      <workItem from="1726066858912" duration="70000" />
+      <workItem from="1726262699782" duration="3155000" />
+      <workItem from="1726274747917" duration="6833000" />
+      <workItem from="1726331866452" duration="6405000" />
+      <workItem from="1726433450477" duration="740000" />
+      <workItem from="1726455745036" duration="3000" />
+      <workItem from="1726580587314" duration="6475000" />
+      <workItem from="1726592706376" duration="1290000" />
+      <workItem from="1726595608909" duration="3902000" />
     </task>
     <task id="LOCAL-00001" summary="Network Creation">
       <option name="closed" value="true" />
@@ -170,7 +180,23 @@
       <option name="project" value="LOCAL" />
       <updated>1725921329691</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Reorganization and README">
+      <option name="closed" value="true" />
+      <created>1726008541200</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1726008541200</updated>
+    </task>
+    <task id="LOCAL-00003" summary="add data files">
+      <option name="closed" value="true" />
+      <created>1726583128977</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1726583128977</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -178,6 +204,13 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Network Creation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Network Creation" />
+    <MESSAGE value="Reorganization and README" />
+    <MESSAGE value="add data files" />
+    <MESSAGE value="Add discovery queries" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add discovery queries" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
