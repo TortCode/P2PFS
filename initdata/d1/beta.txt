@@ -1,0 +1,2 @@
+barndoor
+text for beta.txt:barndoor

@@ -1,0 +1,2 @@
+kitten
+text for kappa.txt:kitten

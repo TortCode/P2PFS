@@ -1,0 +1,2 @@
+action
+text for alpha.txt:action

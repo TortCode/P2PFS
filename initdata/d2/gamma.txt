@@ -1,0 +1,2 @@
+game
+text for gamma.txt:game

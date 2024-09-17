@@ -1,0 +1,2 @@
+magic
+text for mu.txt:magic

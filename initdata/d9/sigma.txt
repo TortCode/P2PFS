@@ -1,0 +1,2 @@
+select
+text for sigma.txt:select
