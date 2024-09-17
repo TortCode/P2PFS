@@ -19,24 +19,26 @@ public class TrackerServer extends ListenerTask {
 
     @Override
     protected void handleConnection(Socket socket) throws IOException {
-        try (
-                socket;
-                DataInputStream in = new DataInputStream(socket.getInputStream());
-                DataOutputStream out = new DataOutputStream(socket.getOutputStream())
-        ) {
-            byte message = in.readByte();
-            if (message == 0) {
-                // trying to join network
-                out.writeInt(this.peers.size());
-                for (InetAddress peer : this.peers) {
-                    byte[] peerAddress = peer.getAddress();
-                    out.writeInt(peerAddress.length);
-                    out.write(peerAddress);
+        try {
+            try (DataInputStream in = new DataInputStream(socket.getInputStream())) {
+                try (DataOutputStream out = new DataOutputStream(socket.getOutputStream())) {
+                    byte message = in.readByte();
+                    if (message == 0) {
+                        // trying to join network
+                        out.writeInt(this.peers.size());
+                        for (InetAddress peer : this.peers) {
+                            byte[] peerAddress = peer.getAddress();
+                            out.writeInt(peerAddress.length);
+                            out.write(peerAddress);
+                        }
+                        out.flush();
+                        this.peers.add(socket.getInetAddress());
+                        System.out.println("TRACKING: " + socket.getInetAddress().getCanonicalHostName());
+                    }
                 }
-                out.flush();
-                this.peers.add(socket.getInetAddress());
-                System.out.println("TRACKING: " + socket.getInetAddress().getCanonicalHostName());
             }
+        } finally {
+            socket.close();
         }
     }
 }
