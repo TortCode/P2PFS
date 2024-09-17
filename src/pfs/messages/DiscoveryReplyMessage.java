@@ -24,7 +24,8 @@ public class DiscoveryReplyMessage extends DiscoveryMessage {
     public void readData(DataInputStream in) throws IOException {
         super.readData(in);
         int addressLength = in.readInt();
-        byte[] terminatorAddress = in.readNBytes(addressLength);
+        byte[] terminatorAddress = new byte[addressLength];
+        in.readFully(terminatorAddress);
         this.terminator = InetAddress.getByAddress(terminatorAddress);
         this.keyword = in.readUTF();
         this.fileName = in.readUTF();

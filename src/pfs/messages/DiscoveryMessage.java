@@ -22,7 +22,8 @@ public abstract class DiscoveryMessage {
 
     public void readData(DataInputStream in) throws IOException {
         int addressLength = in.readInt();
-        byte[] initiatorAddress = in.readNBytes(addressLength);
+        byte[] initiatorAddress = new byte[addressLength];
+        in.readFully(initiatorAddress);
         this.initiator = InetAddress.getByAddress(initiatorAddress);
         this.sequenceId = in.readInt();
         this.expiration = in.readLong();

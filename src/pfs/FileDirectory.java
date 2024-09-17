@@ -7,10 +7,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -30,7 +27,7 @@ public class FileDirectory {
     private final ConcurrentMap<String, FileEntry> keywordMap;
 
     public FileDirectory(String directory) {
-        this.root = Path.of(directory);
+        this.root = Paths.get(directory);
         this.fileNameMap = new ConcurrentHashMap<>();
         this.keywordMap = new ConcurrentHashMap<>();
         try (DirectoryStream<Path> pathStream = Files.newDirectoryStream(this.root)) {

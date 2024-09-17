@@ -284,7 +284,8 @@ public class DiscoveryServer implements Runnable {
             int peersSize = trackerInput.readInt();
             for (int i = 0; i < peersSize; i++) {
                 int peerAddressSize = trackerInput.readInt();
-                byte[] peerAddress = trackerInput.readNBytes(peerAddressSize);
+                byte[] peerAddress = new byte[peerAddressSize];
+                trackerInput.readFully(peerAddress);
                 peers.add(InetAddress.getByAddress(peerAddress));
             }
         } catch (IOException e) {

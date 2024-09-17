@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bf11d1c8-ab05-4d7e-b2e8-fe5c26786334" name="Changes" comment="Add discovery queries">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="bf11d1c8-ab05-4d7e-b2e8-fe5c26786334" name="Changes" comment="Downgrade to Java 8">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pfs/tasks/TrackerServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/tasks/TrackerServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pfs/FileDirectory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/FileDirectory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pfs/messages/DiscoveryMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/messages/DiscoveryMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pfs/messages/DiscoveryReplyMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/messages/DiscoveryReplyMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pfs/tasks/DiscoveryServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/tasks/DiscoveryServer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -161,7 +163,7 @@
       <workItem from="1726580587314" duration="6475000" />
       <workItem from="1726592706376" duration="1290000" />
       <workItem from="1726595608909" duration="4515000" />
-      <workItem from="1726600801943" duration="69000" />
+      <workItem from="1726600801943" duration="446000" />
     </task>
     <task id="LOCAL-00001" summary="Network Creation">
       <option name="closed" value="true" />
@@ -195,7 +197,15 @@
       <option name="project" value="LOCAL" />
       <updated>1726599525441</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Downgrade to Java 8">
+      <option name="closed" value="true" />
+      <created>1726600889582</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1726600889582</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -217,7 +227,8 @@
     <MESSAGE value="Reorganization and README" />
     <MESSAGE value="add data files" />
     <MESSAGE value="Add discovery queries" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add discovery queries" />
+    <MESSAGE value="Downgrade to Java 8" />
+    <option name="LAST_COMMIT_MESSAGE" value="Downgrade to Java 8" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
