@@ -15,10 +15,12 @@ public class FileDirectory {
     public static class FileEntry {
         public final String fileName;
         public final String keyword;
+        public final long contentLength;
 
-        public FileEntry(String fileName, String keyword) {
+        public FileEntry(String fileName, String keyword, long contentLength) {
             this.fileName = fileName;
             this.keyword = keyword;
+            this.contentLength = contentLength;
         }
     }
 
@@ -37,7 +39,9 @@ public class FileDirectory {
                 try (BufferedReader br = Files.newBufferedReader(path)) {
                     keyword = br.readLine();
                 }
-                FileEntry entry = new FileEntry(fileName, keyword);
+                long totalLength = Files.size(path);
+                long contentLength = totalLength - keyword.getBytes().length - 1;
+                FileEntry entry = new FileEntry(fileName, keyword, contentLength);
                 this.fileNameMap.put(fileName, entry);
                 this.keywordMap.put(keyword, entry);
             }
@@ -54,15 +58,14 @@ public class FileDirectory {
         return fileNameMap.get(fileName);
     }
 
-    public void createFile(String fileName, String keyword) throws IOException {
-        FileEntry entry = new FileEntry(fileName, keyword);
+    public void createFile(String fileName, String keyword, long contentLength) throws IOException {
+        FileEntry entry = new FileEntry(fileName, keyword, contentLength);
         this.fileNameMap.put(fileName, entry);
         this.keywordMap.put(keyword, entry);
         Path path = root.resolve(fileName);
-        Files.createFile(path);
         try (BufferedWriter bw = Files.newBufferedWriter(path)) {
             bw.write(keyword);
-            bw.newLine();
+            bw.write('\n');
         }
     }
 
@@ -73,7 +76,9 @@ public class FileDirectory {
 
     public InputStream newFileInput(String fileName) throws IOException {
         InputStream in = new BufferedInputStream(Files.newInputStream(this.root.resolve(fileName), StandardOpenOption.READ));
-        while (in.read() != '\n') ;
+        while (true) {
+            if (in.read() == '\n') break;
+        }
         return in;
     }
 }

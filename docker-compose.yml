@@ -11,6 +11,8 @@ services:
     depends_on:
       - tracker
     stdin_open: true
+    volumes:
+      - ./data:/data
   node2:
     image: p2p
     environment:
@@ -19,6 +21,8 @@ services:
     depends_on:
       - tracker
     stdin_open: true
+    volumes:
+      - ./data:/data
   node3:
     image: p2p
     environment:
@@ -27,6 +31,8 @@ services:
     depends_on:
       - tracker
     stdin_open: true
+    volumes:
+      - ./data:/data
   node4:
     image: p2p
     environment:
@@ -35,6 +41,8 @@ services:
     depends_on:
       - tracker
     stdin_open: true
+    volumes:
+      - ./data:/data
   node5:
     image: p2p
     environment:
@@ -43,6 +51,8 @@ services:
     depends_on:
       - tracker
     stdin_open: true
+    volumes:
+      - ./data:/data
   node6:
     image: p2p
     environment:
@@ -51,6 +61,8 @@ services:
     depends_on:
       - tracker
     stdin_open: true
+    volumes:
+      - ./data:/data
   node7:
     image: p2p
     environment:
@@ -59,6 +71,8 @@ services:
     depends_on:
       - tracker
     stdin_open: true
+    volumes:
+      - ./data:/data
   node8:
     image: p2p
     environment:
@@ -67,6 +81,8 @@ services:
     depends_on:
       - tracker
     stdin_open: true
+    volumes:
+      - ./data:/data
   node9:
     image: p2p
     environment:
@@ -75,6 +91,8 @@ services:
     depends_on:
       - tracker
     stdin_open: true
+    volumes:
+      - ./data:/data
   node10:
     image: p2p
     environment:
@@ -83,6 +101,8 @@ services:
     depends_on:
       - tracker
     stdin_open: true
+    volumes:
+      - ./data:/data
   node11:
     image: p2p
     environment:
@@ -91,6 +111,8 @@ services:
     depends_on:
       - tracker
     stdin_open: true
+    volumes:
+      - ./data:/data
   node12:
     image: p2p
     environment:
@@ -99,6 +121,8 @@ services:
     depends_on:
       - tracker
     stdin_open: true
+    volumes:
+      - ./data:/data
   node13:
     image: p2p
     environment:
@@ -107,6 +131,8 @@ services:
     depends_on:
       - tracker
     stdin_open: true
+    volumes:
+      - ./data:/data
   node14:
     image: p2p
     environment:
@@ -115,6 +141,8 @@ services:
     depends_on:
       - tracker
     stdin_open: true
+    volumes:
+      - ./data:/data
   node15:
     image: p2p
     environment:
@@ -123,3 +151,5 @@ services:
     depends_on:
       - tracker
     stdin_open: true
+    volumes:
+      - ./data:/data

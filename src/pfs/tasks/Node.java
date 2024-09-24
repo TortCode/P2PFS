@@ -2,13 +2,9 @@ package pfs.tasks;
 
 import pfs.Constants;
 import pfs.FileDirectory;
-import pfs.messages.DiscoveryMessage;
-import pfs.messages.DiscoveryQueryMessage;
-import pfs.messages.DiscoveryReplyMessage;
+import pfs.messages.*;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -23,14 +19,14 @@ import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.concurrent.*;
 
-public class DiscoveryServer implements Runnable {
+public class Node {
     private final FileDirectory directory;
     private final String trackerName;
 
     private final InetAddress localAddress;
 
     private final ConcurrentMap<InetAddress, PeerDiscoveryTransceiver> peerDiscoveryTable;
-    private final ConcurrentMap<InetAddress, BlockingQueue<DiscoveryMessage>> senderQueueMap;
+    private final ConcurrentMap<InetAddress, BlockingQueue<Message>> senderQueueMap;
 
     private final BlockingQueue<ReceivedMessage> receiverQueue;
     private final BlockingQueue<TimestampedReplyMessage> replyQueue;
@@ -40,9 +36,11 @@ public class DiscoveryServer implements Runnable {
 
     private int nextSequenceId;
 
-    private ListenerTask discoveryListenerTask;
+    private final ListenerTask discoveryListenerTask;
+    private final Thread discoveryServerThread;
+    private final ListenerTask transferServerTask;
 
-    public DiscoveryServer(String directory, String trackerName) throws UnknownHostException {
+    public Node(String directory, String trackerName) throws UnknownHostException {
         this.directory = new FileDirectory(directory);
         this.trackerName = trackerName;
         this.localAddress = InetAddress.getLocalHost();
@@ -57,19 +55,55 @@ public class DiscoveryServer implements Runnable {
             return Long.compare(lhsExpiration, rhsExpiration);
         });
         this.nextSequenceId = 0;
+        this.discoveryListenerTask = new DiscoveryListener();
+        this.discoveryServerThread = new Thread(this::serveRequests);
+        this.discoveryServerThread.setName("discovery-server");
+        this.transferServerTask = new TransferServer();
     }
 
-    public void run() {
-        this.discoveryListenerTask = new DiscoveryListener();
-        Thread discoveryListenerThread = new Thread(this.discoveryListenerTask);
+    public void start() {
+        Thread discoveryListenerThread = new Thread(discoveryListenerTask);
+        discoveryListenerThread.setName("discovery-listener");
         discoveryListenerThread.start();
         try {
             this.discoveryListenerTask.waitForReady();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        this.connectToDiscoveryNetwork();
-        this.serveDiscoveryRequests();
+        Thread transferServerThread = new Thread(this.transferServerTask);
+        transferServerThread.setName("transfer-server");
+        transferServerThread.start();
+        try {
+            this.transferServerTask.waitForReady();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        this.connectToPeer(this.getRandomPeer());
+        this.discoveryServerThread.start();
+    }
+
+    public void stop() throws IOException, InterruptedException {
+        this.notifyLeave();
+        this.discoveryListenerTask.stop();
+        this.transferServerTask.stop();
+        this.discoveryServerThread.interrupt();
+        this.handoffNeighbors();
+        Thread.sleep(500);
+        for (PeerDiscoveryTransceiver transceiver : this.peerDiscoveryTable.values()) {
+            transceiver.stop();
+        }
+    }
+
+    private void handoffNeighbors() {
+        Random random = new Random();
+        InetAddress[] neighbors = this.senderQueueMap.keySet().toArray(new InetAddress[0]);
+        int index = random.nextInt(neighbors.length);
+        InetAddress handoffAddress = neighbors[index];
+        HangupMessage hangupMessage = new HangupMessage();
+        hangupMessage.handoffAddress = handoffAddress;
+        for (BlockingQueue<Message> senderQueue : this.senderQueueMap.values()) {
+            senderQueue.add(hangupMessage);
+        }
     }
 
     public SearchResult queryFileByKeyword(String keyword) {
@@ -128,7 +162,7 @@ public class DiscoveryServer implements Runnable {
         return results;
     }
 
-    private void serveDiscoveryRequests() {
+    private void serveRequests() {
         while (!Thread.interrupted()) {
             // clear expired messages
             while (!this.expirationQueue.isEmpty()) {
@@ -142,22 +176,32 @@ public class DiscoveryServer implements Runnable {
             }
             try {
                 ReceivedMessage receivedMessage = this.receiverQueue.take();
-                DiscoveryMessage message = receivedMessage.getMessage();
+                Message message = receivedMessage.getMessage();
 
-                // ignore expired messages
-                Instant expirationTime = Instant.ofEpochMilli(message.expiration);
-                if (Instant.now().isAfter(expirationTime)) {
-                    continue;
-                }
+                if (message instanceof DiscoveryMessage) {
+                    // ignore expired messages
+                    Instant expirationTime = Instant.ofEpochMilli(((DiscoveryMessage) message).expiration);
+                    if (Instant.now().isAfter(expirationTime)) {
+                        continue;
+                    }
 
-                // handle QUERY messages
-                if (message instanceof DiscoveryQueryMessage) {
-                    this.handleQueryRequest((DiscoveryQueryMessage) message, receivedMessage.getNeighborAddress());
-                }
+                    // handle QUERY messages
+                    if (message instanceof DiscoveryQueryMessage) {
+                        this.handleQueryRequest((DiscoveryQueryMessage) message, receivedMessage.getNeighborAddress());
+                    }
 
-                // handle REPLY messages
-                if (message instanceof DiscoveryReplyMessage) {
-                    this.handleReplyRequest((DiscoveryReplyMessage) message);
+                    // handle REPLY messages
+                    if (message instanceof DiscoveryReplyMessage) {
+                        this.handleReplyRequest((DiscoveryReplyMessage) message);
+                    }
+                } else if (message instanceof HangupMessage) {
+                    // handle HANGUP messages
+                    InetAddress handoffAddress = ((HangupMessage) message).handoffAddress;
+                    this.peerDiscoveryTable.remove(receivedMessage.getNeighborAddress());
+                    this.senderQueueMap.remove(receivedMessage.getNeighborAddress());
+                    if (!this.localAddress.equals(handoffAddress)) {
+                        this.connectToPeer(handoffAddress);
+                    }
                 }
             } catch (InterruptedException e) {
                 return;
@@ -204,9 +248,9 @@ public class DiscoveryServer implements Runnable {
         } else if (queryMessage.hopCount > 0) {
             // forward message if hops are available
             queryMessage.hopCount--;
-            for (Map.Entry<InetAddress, BlockingQueue<DiscoveryMessage>> senderEntry : this.senderQueueMap.entrySet()) {
+            for (Map.Entry<InetAddress, BlockingQueue<Message>> senderEntry : this.senderQueueMap.entrySet()) {
                 InetAddress senderAddress = senderEntry.getKey();
-                BlockingQueue<DiscoveryMessage> senderQueue = senderEntry.getValue();
+                BlockingQueue<Message> senderQueue = senderEntry.getValue();
 
                 // do not resend to neighbor that sent query
                 if (neighborAddress.equals(senderAddress)) {
@@ -231,38 +275,22 @@ public class DiscoveryServer implements Runnable {
     }
 
     private void addLink(Socket socket) throws IOException {
-        BlockingQueue<DiscoveryMessage> senderQueue = new LinkedBlockingQueue<>();
+        BlockingQueue<Message> senderQueue = new LinkedBlockingQueue<>();
         this.senderQueueMap.put(socket.getInetAddress(), senderQueue);
-        PeerDiscoveryTransceiver transceiver =  new PeerDiscoveryTransceiver(socket, senderQueue, this.receiverQueue);
+        PeerDiscoveryTransceiver transceiver = new PeerDiscoveryTransceiver(socket, senderQueue, this.receiverQueue);
         this.peerDiscoveryTable.put(socket.getInetAddress(), transceiver);
         transceiver.start();
-        System.out.println("NEIGHBORS:\n");
+        StringBuilder sb = new StringBuilder("NEIGHBORS:\n");
         for (InetAddress peerAddress : this.peerDiscoveryTable.keySet()) {
-            System.out.println(peerAddress.getCanonicalHostName() + '\n');
+            sb.append(peerAddress.getCanonicalHostName()).append('\n');
         }
+        System.out.println(sb);
     }
 
-    private class DiscoveryListener extends ListenerTask {
-        public DiscoveryListener() {
-            super(Constants.DISCOVERY_PORT);
-        }
-
-        @Override
-        protected void handleConnection(Socket socket) throws IOException {
-            System.out.println("CONNECT FROM: " + socket.getInetAddress().getCanonicalHostName());
-            DiscoveryServer.this.addLink(socket);
-        }
-    }
-
-    private void connectToDiscoveryNetwork() {
-        List<InetAddress> peers = this.getAllPeers();
-
-        Random random = new Random();
-        if (peers.isEmpty()) {
+    private void connectToPeer(InetAddress peerAddress) {
+        if (peerAddress == null) {
             return;
         }
-        int index = random.nextInt(peers.size());
-        InetAddress peerAddress = peers.get(index);
         try {
             Socket discoverySocket = new Socket(peerAddress, Constants.DISCOVERY_PORT);
             System.out.println("CONNECT TO: " + discoverySocket.getInetAddress().getCanonicalHostName());
@@ -272,7 +300,20 @@ public class DiscoveryServer implements Runnable {
         }
     }
 
-    private List<InetAddress> getAllPeers() {
+    private void notifyLeave() {
+        try (
+                Socket trackerSocket = new Socket(this.trackerName, Constants.TRACKER_PORT);
+                DataOutputStream trackerOutput = new DataOutputStream(trackerSocket.getOutputStream())
+        ) {
+            trackerOutput.writeByte(1);
+            trackerOutput.flush();
+            System.out.println("Notifying LEAVE");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private InetAddress getRandomPeer() {
         List<InetAddress> peers = new ArrayList<>();
         try (
                 Socket trackerSocket = new Socket(this.trackerName, Constants.TRACKER_PORT);
@@ -291,7 +332,89 @@ public class DiscoveryServer implements Runnable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return peers;
+        Random random = new Random();
+        if (peers.isEmpty()) {
+            return null;
+        }
+        int index = random.nextInt(peers.size());
+        return peers.get(index);
+    }
+
+    public void transferFile(InetAddress target, String fileName, String keyword) throws IOException {
+        try (
+                Socket socket = new Socket(target, Constants.TRANSFER_PORT);
+                DataInputStream in = new DataInputStream(socket.getInputStream());
+                DataOutputStream out = new DataOutputStream(socket.getOutputStream())
+        ) {
+            out.writeUTF(fileName);
+            out.flush();
+
+            long contentLength = in.readLong();
+            this.directory.createFile(fileName, keyword, contentLength);
+            try (OutputStream fileWriter = this.directory.newFileOutput(fileName)) {
+                byte[] buffer = new byte[4096];
+                while (contentLength > 0) {
+                    int bytesRead = in.read(buffer);
+                    fileWriter.write(buffer, 0, bytesRead);
+                    contentLength -= bytesRead;
+                }
+                System.out.println("Download complete!");
+            }
+        }
+    }
+
+    private class DiscoveryListener extends ListenerTask {
+        public DiscoveryListener() {
+            super(Constants.DISCOVERY_PORT);
+        }
+
+        @Override
+        protected void handleConnection(Socket socket) throws IOException {
+            System.out.println("CONNECT FROM: " + socket.getInetAddress().getCanonicalHostName());
+            Node.this.addLink(socket);
+        }
+    }
+
+    private class TransferServer extends ListenerTask {
+        public TransferServer() {super(Constants.TRANSFER_PORT);}
+
+        @Override
+        protected void handleConnection(Socket socket) {
+            Thread handlerThread = new Thread(() -> {
+                try {
+                    this.serveRequest(socket);
+                } catch (IOException ignored) {
+                }
+            });
+            handlerThread.start();
+        }
+
+        private void serveRequest(Socket socket) throws IOException {
+            try (
+                    DataInputStream in = new DataInputStream(socket.getInputStream());
+                    DataOutputStream out = new DataOutputStream(socket.getOutputStream())
+            ) {
+                socket.setSoTimeout(200);
+                String fileName = in.readUTF();
+                FileDirectory.FileEntry entry = Node.this.directory.searchByFileName(fileName);
+                if (entry == null) {
+                    return;
+                }
+
+                long contentLength = entry.contentLength;
+                out.writeLong(contentLength);
+                try (InputStream fileReader = Node.this.directory.newFileInput(fileName)) {
+                    byte[] buffer = new byte[4096];
+                    while (contentLength > 0) {
+                        int bytesRead = fileReader.read(buffer);
+                        out.write(buffer, 0, bytesRead);
+                        contentLength -= bytesRead;
+                    }
+                }
+            } finally {
+                socket.close();
+            }
+        }
     }
 
     public static class SearchResult {
@@ -303,20 +426,21 @@ public class DiscoveryServer implements Runnable {
             this.messages = messages;
         }
 
-        public List<TimestampedReplyMessage> getMessages() { return messages; }
-        public int getHopCount() { return hopCount; }
+        public List<TimestampedReplyMessage> getMessages() {return messages;}
+
+        public int getHopCount() {return hopCount;}
     }
 
-    static class ReceivedMessage {
-        private final DiscoveryMessage message;
+    public static class ReceivedMessage {
+        private final Message message;
         private final InetAddress neighbor;
 
-        public ReceivedMessage(DiscoveryMessage message, InetAddress neighbor) {
+        public ReceivedMessage(Message message, InetAddress neighbor) {
             this.message = message;
             this.neighbor = neighbor;
         }
 
-        public DiscoveryMessage getMessage() {return this.message;}
+        public Message getMessage() {return this.message;}
 
         public InetAddress getNeighborAddress() {return this.neighbor;}
     }
@@ -331,6 +455,7 @@ public class DiscoveryServer implements Runnable {
         }
 
         public DiscoveryReplyMessage getReplyMessage() {return this.replyMessage;}
+
         public Instant getArrivalTime() {return this.arrivalTime;}
     }
 

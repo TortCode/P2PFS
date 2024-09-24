@@ -1,15 +1,16 @@
 package pfs;
 
-import pfs.tasks.DiscoveryServer;
+import pfs.messages.DiscoveryReplyMessage;
+import pfs.tasks.Node;
 import pfs.tasks.TrackerServer;
 
-import java.net.UnknownHostException;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws UnknownHostException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         if (args.length != 0 && args.length != 2) {
             System.err.println("Usage: java pfs.Main (for tracker)");
             System.err.println("Usage: java pfs.Main <directory> <trackername> (for node)");
@@ -20,58 +21,90 @@ public class Main {
             TrackerServer trackerServer = new TrackerServer();
             trackerServer.run();
         } else if (args.length == 2) {
-            DiscoveryServer discoveryServer = new DiscoveryServer(args[0], args[1]);
-            Thread discoveryServerThread = new Thread(discoveryServer);
-            discoveryServerThread.start();
+            Node node = new Node(args[0], args[1]);
+            node.start();
 
             Scanner sc = new Scanner(System.in);
 
             int choice;
-            do {
-                System.out.println("select:");
-                System.out.println("1) search by keyword");
-                System.out.println("2) search by filename");
+            while (true) {
+                String menuOptions = "select:\n" +
+                        "1) search by keyword\n" +
+                        "2) search by filename\n" +
+                        "3) quit\n";
+                System.out.println(menuOptions);
 
                 String token;
                 while (true) {
                     token = sc.next();
                     try {
                         choice = Integer.parseInt(token);
-                        if (choice >= 1 && choice <= 2) {
+                        if (choice >= 1 && choice <= 3) {
                             break;
                         } else {
-                            System.out.println("number must be between 1 and 3: please reenter");
+                            System.out.format("number must be between 1 and 3: please reenter");
                         }
                     } catch (NumberFormatException e) {
                         System.out.println("invalid number: please reenter");
                     }
                 }
 
-                DiscoveryServer.SearchResult result = null;
-                Instant startTime = Instant.now();
+                Node.SearchResult result = null;
+                Instant startTime = null;
                 switch (choice) {
                     case 1:
                         System.out.println("enter keyword:");
                         String keyword = sc.next();
-                        result = discoveryServer.queryFileByKeyword(keyword);
+                        startTime = Instant.now();
+                        result = node.queryFileByKeyword(keyword);
                         break;
                     case 2:
                         System.out.println("enter filename:");
                         String fileName = sc.next();
-                        result = discoveryServer.queryFileByFileName(fileName);
+                        startTime = Instant.now();
+                        result = node.queryFileByFileName(fileName);
                         break;
+                    case 3:
+                        System.out.println("exiting...");
+                        node.stop();
+                        return;
                 }
 
                 if (result == null) {
-                    System.out.println("Query failed");
+                    System.out.println("SEARCH FAIL\n");
                 } else {
-                    System.out.println("Query succeeded with HOPCOUNT: " + result.getHopCount());
-                    for (DiscoveryServer.TimestampedReplyMessage message : result.getMessages()) {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("SEARCH SUCCESS | HOPCOUNT: ");
+                    sb.append(result.getHopCount());
+                    sb.append('\n');
+                    int i = 1;
+                    for (Node.TimestampedReplyMessage message : result.getMessages()) {
                         long elapsedMillis = Duration.between(startTime, message.getArrivalTime()).toMillis();
-                        System.out.printf("[%d ms]: %s\n", elapsedMillis, message.getReplyMessage().terminator.getCanonicalHostName());
+                        sb.append(String.format("%d) [%d ms]: %s\n", i, elapsedMillis, message.getReplyMessage().terminator.getCanonicalHostName()));
+                        i++;
                     }
+                    System.out.println(sb);
+
+                    System.out.println("Enter choice:");
+                    int transferChoice;
+                    while (true) {
+                        token = sc.next();
+                        try {
+                            transferChoice = Integer.parseInt(token) - 1;
+                            if (transferChoice >= 0 && transferChoice < result.getMessages().size()) {
+                                break;
+                            } else {
+                                System.out.format("number must be between 1 and %d: please reenter\n", result.getMessages().size());
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("invalid number: please reenter");
+                        }
+                    }
+
+                    DiscoveryReplyMessage replyMessage = result.getMessages().get(transferChoice).getReplyMessage();
+                    node.transferFile(replyMessage.terminator, replyMessage.fileName, replyMessage.keyword);
                 }
-            } while (true);
+            }
         }
     }
 }

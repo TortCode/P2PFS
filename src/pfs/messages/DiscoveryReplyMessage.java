@@ -13,9 +13,7 @@ public class DiscoveryReplyMessage extends DiscoveryMessage {
     @Override
     public void writeData(DataOutputStream out) throws IOException {
         super.writeData(out);
-        byte[] terminatorAddress = terminator.getAddress();
-        out.writeInt(terminatorAddress.length);
-        out.write(terminatorAddress);
+        Message.writeBytes(out, terminator.getAddress());
         out.writeUTF(keyword);
         out.writeUTF(fileName);
     }
@@ -23,10 +21,7 @@ public class DiscoveryReplyMessage extends DiscoveryMessage {
     @Override
     public void readData(DataInputStream in) throws IOException {
         super.readData(in);
-        int addressLength = in.readInt();
-        byte[] terminatorAddress = new byte[addressLength];
-        in.readFully(terminatorAddress);
-        this.terminator = InetAddress.getByAddress(terminatorAddress);
+        this.terminator = InetAddress.getByAddress(Message.readBytes(in));
         this.keyword = in.readUTF();
         this.fileName = in.readUTF();
     }

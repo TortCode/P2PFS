@@ -5,26 +5,21 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 
-public abstract class DiscoveryMessage {
+public abstract class DiscoveryMessage implements Message {
     public InetAddress initiator;
     public int sequenceId;
     public long expiration; // specified in epoch milliseconds
 
-    private static int nextSequenceId = 0;
-
+    @Override
     public void writeData(DataOutputStream out) throws IOException {
-        byte[] initiatorAddress = initiator.getAddress();
-        out.writeInt(initiatorAddress.length);
-        out.write(initiatorAddress);
+        Message.writeBytes(out, initiator.getAddress());
         out.writeInt(sequenceId);
         out.writeLong(expiration);
     }
 
+    @Override
     public void readData(DataInputStream in) throws IOException {
-        int addressLength = in.readInt();
-        byte[] initiatorAddress = new byte[addressLength];
-        in.readFully(initiatorAddress);
-        this.initiator = InetAddress.getByAddress(initiatorAddress);
+        this.initiator = InetAddress.getByAddress(Message.readBytes(in));
         this.sequenceId = in.readInt();
         this.expiration = in.readLong();
     }

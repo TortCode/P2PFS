@@ -25,14 +25,13 @@ public abstract class ListenerTask implements Runnable {
             this.serverSocket = serverSocket;
             this.readyLatch.countDown();
             while (!Thread.interrupted()) {
+                Socket socket = this.serverSocket.accept();
                 try {
-                    Socket socket = this.serverSocket.accept();
                     this.handleConnection(socket);
                 } catch (IOException ignored) {
                 }
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException ignored) {
         }
     }
 

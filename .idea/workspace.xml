@@ -4,12 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bf11d1c8-ab05-4d7e-b2e8-fe5c26786334" name="Changes" comment="Downgrade to Java 8">
+    <list default="true" id="bf11d1c8-ab05-4d7e-b2e8-fe5c26786334" name="Changes" comment="file transfers and node departures">
+      <change afterPath="$PROJECT_DIR$/src/pfs/messages/HangupMessage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pfs/messages/Message.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/initdata/d3/delta.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/initdata/d4/eta.text" beforeDir="false" afterPath="$PROJECT_DIR$/initdata/d4/eta.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pfs/FileDirectory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/FileDirectory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pfs/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pfs/messages/DiscoveryMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/messages/DiscoveryMessage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pfs/messages/DiscoveryReplyMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/messages/DiscoveryReplyMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pfs/tasks/DiscoveryServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/tasks/DiscoveryServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pfs/tasks/DiscoveryServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/tasks/Node.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pfs/tasks/ListenerTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/tasks/ListenerTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pfs/tasks/PeerDiscoveryTransceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/tasks/PeerDiscoveryTransceiver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pfs/tasks/TrackerServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/tasks/TrackerServer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +57,7 @@
   &quot;isMigrated&quot;: true
 }</component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
@@ -57,30 +68,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Docker.Dockerfile.executor": "Run",
-    "Docker.docker-compose.yml: Compose Deployment.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "extract.method.default.visibility": "private",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/teerth/IdeaProjects/P2PFS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "/Users/teerth/IdeaProjects/PeerFileSharing/src/Main.java",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "terminal",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Docker.Dockerfile.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/teerth/IdeaProjects/P2PFS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;/Users/teerth/IdeaProjects/PeerFileSharing/src/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/data" />
@@ -112,7 +123,9 @@
     <configuration name="docker-compose.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
+          <option name="envFilePath" value="" />
           <option name="sourceFilePath" value="docker-compose.yml" />
+          <option name="upForceRecreate" value="true" />
         </settings>
       </deployment>
       <method v="2" />
@@ -163,7 +176,15 @@
       <workItem from="1726580587314" duration="6475000" />
       <workItem from="1726592706376" duration="1290000" />
       <workItem from="1726595608909" duration="4515000" />
-      <workItem from="1726600801943" duration="446000" />
+      <workItem from="1726600801943" duration="2022000" />
+      <workItem from="1726603718592" duration="603000" />
+      <workItem from="1727030252169" duration="10011000" />
+      <workItem from="1727054442587" duration="3384000" />
+      <workItem from="1727103984221" duration="2305000" />
+      <workItem from="1727108583855" duration="352000" />
+      <workItem from="1727128488527" duration="3000" />
+      <workItem from="1727186493941" duration="2000" />
+      <workItem from="1727189997252" duration="3864000" />
     </task>
     <task id="LOCAL-00001" summary="Network Creation">
       <option name="closed" value="true" />
@@ -205,7 +226,15 @@
       <option name="project" value="LOCAL" />
       <updated>1726600889582</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="i hate utd servers">
+      <option name="closed" value="true" />
+      <created>1726601331776</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1726601331776</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -228,7 +257,9 @@
     <MESSAGE value="add data files" />
     <MESSAGE value="Add discovery queries" />
     <MESSAGE value="Downgrade to Java 8" />
-    <option name="LAST_COMMIT_MESSAGE" value="Downgrade to Java 8" />
+    <MESSAGE value="i hate utd servers" />
+    <MESSAGE value="file transfers and node departures" />
+    <option name="LAST_COMMIT_MESSAGE" value="file transfers and node departures" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -31,13 +31,13 @@ javac -d ./out/ @sources.txt
 #### Tracker
 Start a tracker server on any host (note the hostname down) with:
 ```
-java -cp ./out/ pfs.Main
+./tracker.sh
 ```
 
 #### Peer
 For each integer `i` from 1 to 15, pick a unique host and start peer `i` with:
 ```
-java -cp ./out/ pfs.Main ./data/d{i} {tracker hostname}
+./node.sh {trackerhostname} {i}
 ```
 
 *curly braces {} indicates substitution with the appropriate variable
@@ -49,3 +49,5 @@ Each peer will log the following items:
 - CONNECT TO <hostname>: Peer is sending a connection request to specified hostname
 - CONNECT FROM <hostname>: Peer is receiving a connection request from specified hostname
 - NEIGHBORS <hostnames>: Peer currently connected to the following hostnames (logged on connection request sent/received)
+- SEND <details...>: Sending a message
+- RECV <details...>: Receiving a message
