@@ -5,22 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bf11d1c8-ab05-4d7e-b2e8-fe5c26786334" name="Changes" comment="file transfers and node departures">
-      <change afterPath="$PROJECT_DIR$/src/pfs/messages/HangupMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pfs/messages/Message.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/initdata/d3/delta.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/initdata/d4/eta.text" beforeDir="false" afterPath="$PROJECT_DIR$/initdata/d4/eta.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pfs/FileDirectory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/FileDirectory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pfs/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pfs/messages/DiscoveryMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/messages/DiscoveryMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pfs/messages/DiscoveryReplyMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/messages/DiscoveryReplyMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pfs/tasks/DiscoveryServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/tasks/Node.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pfs/tasks/ListenerTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/tasks/ListenerTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pfs/tasks/PeerDiscoveryTransceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/tasks/PeerDiscoveryTransceiver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pfs/tasks/TrackerServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/tasks/TrackerServer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,8 +125,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.21829.142" />
-        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-IU-242.21829.142" />
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.22855.74" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.22855.74" />
       </set>
     </attachedChunks>
   </component>
@@ -184,7 +170,8 @@
       <workItem from="1727108583855" duration="352000" />
       <workItem from="1727128488527" duration="3000" />
       <workItem from="1727186493941" duration="2000" />
-      <workItem from="1727189997252" duration="3864000" />
+      <workItem from="1727189997252" duration="4190000" />
+      <workItem from="1727384055624" duration="1335000" />
     </task>
     <task id="LOCAL-00001" summary="Network Creation">
       <option name="closed" value="true" />
@@ -234,7 +221,15 @@
       <option name="project" value="LOCAL" />
       <updated>1726601331776</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="file transfers and node departures">
+      <option name="closed" value="true" />
+      <created>1727193884855</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1727193884855</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -1,7 +1,7 @@
 # Peer2Peer-FileShare
 ## Contents
-- `data`
-  - `d{i}`: Data for peer `i`
+- `initdata`
+  - `d{i}`: Initial data for peer `i`
   - `populate.py`: Utility script to add a file and keyword to a directory
 - `src`
   - `Main`:
@@ -11,14 +11,16 @@
   - `FileDirectory`:
   Processes contents of data directory to generate list of available files and keywords
   - `tasks`: Background tasks running on each node
-    - `DiscoveryServer`: Server for joining and accepting connections from resource discovery network
-    - `PeerDiscoveryTransceiver`: For future use
+    - `Node`: Interface to entire peer network, including join/leave, discovery, and file transfers
+    - `PeerDiscoveryTransceiver`: Task for transmitting and receiving data from a particular neighbor
     - `TrackerServer`: Server for tracking all nodes in network
     - `ListenerTask`: Base class for servers
   - `messages`: Message formats
+    - `Message`: Base class for messages, with utility methods for serializing byte arrays
+    - `HangupMessage`: Represents hangup messages (for disconnecting from network)
     - `DiscoveryMessage`: Base class containing common data to all discovery messages
-    - `DiscoveryQueryMessage`: For future use
-    - `DiscoveryReplyMessage`: For future use
+    - `DiscoveryQueryMessage`: Represents discovery query messages
+    - `DiscoveryReplyMessage`: Represents discovery reply messages
 ## Instructions
 ### Compilation
 Compile the Java source files into class files:
