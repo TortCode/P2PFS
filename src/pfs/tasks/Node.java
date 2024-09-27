@@ -197,7 +197,13 @@ public class Node {
                 } else if (message instanceof HangupMessage) {
                     // handle HANGUP messages
                     InetAddress handoffAddress = ((HangupMessage) message).handoffAddress;
-                    this.peerDiscoveryTable.remove(receivedMessage.getNeighborAddress());
+                    PeerDiscoveryTransceiver transceiver = this.peerDiscoveryTable.remove(receivedMessage.getNeighborAddress());
+                    try {
+                        if (transceiver != null) {
+                            transceiver.stop();
+                        }
+                    } catch (IOException ignored) {
+                    }
                     this.senderQueueMap.remove(receivedMessage.getNeighborAddress());
                     if (!this.localAddress.equals(handoffAddress)) {
                         this.connectToPeer(handoffAddress);

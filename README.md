@@ -12,12 +12,12 @@
   Processes contents of data directory to generate list of available files and keywords
   - `tasks`: Background tasks running on each node
     - `Node`: Interface to entire peer network, including join/leave, discovery, and file transfers
-    - `PeerDiscoveryTransceiver`: Task for transmitting and receiving data from a particular neighbor
+    - `PeerDiscoveryTransceiver`: Task for transmitting and receiving data to/from a particular neighbor
     - `TrackerServer`: Server for tracking all nodes in network
     - `ListenerTask`: Base class for servers
   - `messages`: Message formats
     - `Message`: Base class for messages, with utility methods for serializing byte arrays
-    - `HangupMessage`: Represents hangup messages (for disconnecting from network)
+    - `HangupMessage`: Represents hangup messages (for disconnecting from neighbors)
     - `DiscoveryMessage`: Base class containing common data to all discovery messages
     - `DiscoveryQueryMessage`: Represents discovery query messages
     - `DiscoveryReplyMessage`: Represents discovery reply messages
@@ -25,8 +25,7 @@
 ### Compilation
 Compile the Java source files into class files:
 ```
-find ./src/ -type f -name "*.java" > sources.txt
-javac -d ./out/ @sources.txt
+./compile.sh
 ```
 
 ### Execution
