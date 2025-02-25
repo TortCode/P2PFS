@@ -22,6 +22,12 @@
     - `DiscoveryQueryMessage`: Represents discovery query messages
     - `DiscoveryReplyMessage`: Represents discovery reply messages
 ## Instructions
+### Data Setup
+Copy initial data to data directory with:
+```
+./setupdata.sh
+```
+
 ### Compilation
 Compile the Java source files into class files:
 ```

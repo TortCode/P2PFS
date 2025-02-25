@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bf11d1c8-ab05-4d7e-b2e8-fe5c26786334" name="Changes" comment="update README.md">
+    <list default="true" id="bf11d1c8-ab05-4d7e-b2e8-fe5c26786334" name="Changes" comment="Ensure associated resources are cleaned when neighbor leaves">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pfs/tasks/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pfs/tasks/Node.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +70,7 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;onboarding.tips.debug.path&quot;: &quot;/Users/teerth/IdeaProjects/PeerFileSharing/src/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
@@ -126,8 +125,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.22855.74" />
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.22855.74" />
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
       </set>
     </attachedChunks>
   </component>
@@ -173,7 +172,14 @@
       <workItem from="1727186493941" duration="2000" />
       <workItem from="1727189997252" duration="4190000" />
       <workItem from="1727384055624" duration="1605000" />
-      <workItem from="1727404634056" duration="546000" />
+      <workItem from="1727404634056" duration="718000" />
+      <workItem from="1727405437598" duration="964000" />
+      <workItem from="1727406411609" duration="293000" />
+      <workItem from="1727636221012" duration="96000" />
+      <workItem from="1727636393669" duration="42000" />
+      <workItem from="1727636674990" duration="847000" />
+      <workItem from="1729887321877" duration="264000" />
+      <workItem from="1740091369610" duration="27000" />
     </task>
     <task id="LOCAL-00001" summary="Network Creation">
       <option name="closed" value="true" />
@@ -239,7 +245,15 @@
       <option name="project" value="LOCAL" />
       <updated>1727385484284</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Ensure associated resources are cleaned when neighbor leaves">
+      <option name="closed" value="true" />
+      <created>1727405247820</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1727405247820</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -265,7 +279,8 @@
     <MESSAGE value="i hate utd servers" />
     <MESSAGE value="file transfers and node departures" />
     <MESSAGE value="update README.md" />
-    <option name="LAST_COMMIT_MESSAGE" value="update README.md" />
+    <MESSAGE value="Ensure associated resources are cleaned when neighbor leaves" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ensure associated resources are cleaned when neighbor leaves" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
